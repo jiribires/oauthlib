@@ -595,3 +595,7 @@ class RequestValidator(object):
             - OpenIDConnectHybrid
         """
         raise NotImplementedError('Subclasses must implement this method.')
+
+    def validate_saml2_response(self, assertion, client, request):
+        raise NotImplementedError('Subclasses must implement this method.')
+        

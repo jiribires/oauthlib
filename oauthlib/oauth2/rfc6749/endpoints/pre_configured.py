@@ -15,7 +15,8 @@ from ..grant_types import (AuthCodeGrantDispatcher, AuthorizationCodeGrant,
                            OpenIDConnectAuthCode, OpenIDConnectImplicit,
                            OpenIDConnectHybrid,
                            RefreshTokenGrant,
-                           ResourceOwnerPasswordCredentialsGrant)
+                           ResourceOwnerPasswordCredentialsGrant,
+                           SAML2BearerGrant)
 from ..tokens import BearerToken
 from .authorization import AuthorizationEndpoint
 from .resource import ResourceEndpoint
@@ -48,6 +49,8 @@ class Server(AuthorizationEndpoint, TokenEndpoint, ResourceEndpoint,
         implicit_grant = ImplicitGrant(request_validator)
         password_grant = ResourceOwnerPasswordCredentialsGrant(
             request_validator)
+        saml2_grant = SAML2BearerGrant(request_validator)
+            
         credentials_grant = ClientCredentialsGrant(request_validator)
         refresh_grant = RefreshTokenGrant(request_validator)
         openid_connect_auth = OpenIDConnectAuthCode(request_validator)
@@ -59,7 +62,6 @@ class Server(AuthorizationEndpoint, TokenEndpoint, ResourceEndpoint,
 
         auth_grant_choice = AuthCodeGrantDispatcher(default_auth_grant=auth_grant, oidc_auth_grant=openid_connect_auth)
         implicit_grant_choice = ImplicitTokenGrantDispatcher(default_implicit_grant=implicit_grant, oidc_implicit_grant=openid_connect_implicit)
-
         # See http://openid.net/specs/oauth-v2-multiple-response-types-1_0.html#Combinations for valid combinations
         # internally our AuthorizationEndpoint will ensure they can appear in any order for any valid combination
         AuthorizationEndpoint.__init__(self, default_response_type='code',
@@ -83,6 +85,7 @@ class Server(AuthorizationEndpoint, TokenEndpoint, ResourceEndpoint,
                                    'password': password_grant,
                                    'client_credentials': credentials_grant,
                                    'refresh_token': refresh_grant,
+                                   'urn:ietf:params:oauth:grant-type:saml2-bearer': saml2_grant
                                },
                                default_token_type=bearer)
         ResourceEndpoint.__init__(self, default_token='Bearer',
