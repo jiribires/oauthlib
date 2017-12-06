@@ -417,7 +417,10 @@ class Request(object):
             "ui_locales": None,
             "id_token_hint": None,
             "login_hint": None,
-            "acr_values": None
+            "acr_values": None,
+
+            # SAML2
+            "assertion": None,
         }
         self._params.update(dict(urldecode(self.uri_query)))
         self._params.update(dict(self.decoded_body or []))

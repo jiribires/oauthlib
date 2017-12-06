@@ -18,3 +18,4 @@ from .openid_connect import OIDCNoPrompt
 from .openid_connect import AuthCodeGrantDispatcher
 from .openid_connect import AuthTokenGrantDispatcher
 from .openid_connect import ImplicitTokenGrantDispatcher
+from .saml2_bearer import SAML2BearerGrant
