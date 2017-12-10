@@ -42,8 +42,8 @@ class SAML2BearerGrant(GrantTypeBase):
             token = modifier(token)
         self.request_validator.save_token(token, request)
 
-        log.debug('Issuing token %r to client id %r (%r) and username %s.',
-                  token, request.client_id, request.client, request.username)
+        log.debug('Issuing token %r to client id %r (%r) and user %s.',
+                  token, request.client_id, request.client, request.user)
         return headers, json.dumps(token), 200
 
     def validate_token_request(self, request):
